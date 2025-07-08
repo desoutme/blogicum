@@ -87,6 +87,11 @@ class Post(BaseModel):
         null=True,
         verbose_name='Категория',
     )
+    image = models.ImageField(
+        'Изображение',
+        upload_to='post_image',
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'публикация'
@@ -95,3 +100,27 @@ class Post(BaseModel):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        verbose_name='Пост',
+        related_name='comments'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Автор'
+    )
+    text = models.TextField('Текст')
+    created_at = models.DateTimeField(
+        'Дата и время создания',
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = 'комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ('created_at',)
