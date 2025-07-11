@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.text import Truncator
 
-
 from .models import Category, Location, Post
 
 MAX_PER_PAGE = 20

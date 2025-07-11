@@ -1,21 +1,17 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    ListView,
-    UpdateView,
-)
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
-from blog.models import Category, Post, Comment
+from blog.models import Category, Comment, Post
 
-from .forms import PostForm, ProfileEditForm, CommentForm
+from .forms import CommentForm, PostForm, ProfileEditForm
+
 PAGINATE_COUNT = 10
 
 User = get_user_model()
@@ -175,10 +171,9 @@ class ProfileDetailView(ListView):
                 category__is_published=True,
                 pub_date__lte=timezone.now()
             ).order_by('-pub_date').annotate(comment_count=Count('comments'))
-        else:
-            return Post.objects.filter(
-                author=self.profile
-            ).order_by('-pub_date').annotate(comment_count=Count('comments'))
+        return Post.objects.filter(
+            author=self.profile
+        ).order_by('-pub_date').annotate(comment_count=Count('comments'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -1,9 +1,8 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
-from django.conf import settings
 from django.urls import include, path, reverse_lazy
 from django.views.generic.edit import CreateView
-
 
 handler403 = 'pages.views.csrf_failure'
 handler404 = 'pages.views.page_not_found'
